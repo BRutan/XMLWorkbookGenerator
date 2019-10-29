@@ -2,7 +2,7 @@
 
 XMLWorkbookGenerator is an intuitive wrapper for the OpenXmlWriter class defined in the OpenXML library. 
 
-OpenXmlWriter is a very fast, low memory overhead way of generating Excel workbooks, by writing to the underlying XML inherent to XLSX files. It unfortunately is rather complicated and mysterious to work with, given the lack of documentation. Hence the necessity for this class.
+OpenXmlWriter is a very fast, low overhead way of generating Excel workbooks, by writing to the underlying XML inherent to XLSX files. It unfortunately is rather complicated and mysterious to work with, given the lack of documentation. Hence the necessity for this class.
 
 XMLWorkbookGenerator can generate a 150 MB workbook filled with simple strings in one minute and thirty seconds, using at most 75MB of RAM. This is astronomically faster than VBA, and would cause an out-of-memory issue if attempted with the default C# Excel interop library. 
 
