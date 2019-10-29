@@ -22,6 +22,7 @@ Operations must be done in a particular order for the workbook to be generated c
 2. WriteRow(), WriteColumn() or WriteAllData() to performing all write operations on this active sheet.
 3. FinishSheet() method to lock in all write operations to the worksheet.  
 (Optional) Repeat steps 1-3 if necessary.
+Final Step: GenerateFile() to generate file at stored path.
 
 # Write Operations:
 
@@ -35,7 +36,9 @@ o	WriteAllData(data, row#, col#): write all string data contained in 2 dimension
 
 # Important Notes:
 
-o	After FinishSheet() has been called, one cannot write to a previously generated sheet. After writing all data to all intended sheets, one then must call the GenerateFile() method to finish writing to the file. Performing these steps out of order will throw a derived NonFatal or SemiFatal exception.     
+o	After FinishSheet() has been called, one cannot write to a previously generated sheet. 
+
+o	Performing these steps out of order will throw a derived NonFatal or SemiFatal exception.     
 
 o	Write operations check if provided row and column are out of bounds, and will throw a nonfatal exception if either are. The maximum (row, column) is (1048576, 16384) for XLSX workbooks.	
 
@@ -45,7 +48,7 @@ o	The constructor requires the full file path (folder + file name) where the wor
 
 o	One cannot overwrite to previously written-to row with another call to the listed write operations, due to the nature of the underlying XML. Doing so will throw an exception, to prevent workbook corruption. 
 
-o	Sheet names must be unique in Excel workbooks. Trying to add a sheet with a name that has already been added will throw an exception. 
+o	Sheet names must be unique in Excel workbooks. Trying to add a sheet with a name that has already been added will throw a NonFatal exception. 
 
 o	If an Excel workbook with the same name + path exists at the path provided at the constructor, an exception will be thrown to prevent unintentional overwrites, since it would be overwritten otherwise. 
 
