@@ -24,6 +24,8 @@ Operations must be done in a particular order for the workbook to be generated c
 (Optional) Repeat steps 1-3 if necessary.
 Final Step: GenerateFile() to generate file at stored path.
 
+Performing these steps out of order will throw a derived NonFatal or SemiFatal exception.     
+
 # Write Operations:
 
 Write operations to sheets are performed with (using zero-based indices): 
@@ -38,18 +40,16 @@ o	WriteAllData(data, row#, col#): write all string data contained in 2 dimension
 
 o	After FinishSheet() has been called, one cannot write to a previously generated sheet. 
 
-o	Performing these steps out of order will throw a derived NonFatal or SemiFatal exception.     
+o	Write operations check if provided row and column are out of bounds, and will throw a NonFatal exception if either are. The maximum (row, column) is (1048576, 16384) for XLSX workbooks.
 
-o	Write operations check if provided row and column are out of bounds, and will throw a nonfatal exception if either are. The maximum (row, column) is (1048576, 16384) for XLSX workbooks.	
+o	A maximum of 255 sheets can be written to the workbook. Attempting to write more will throw a SemiFatal exception.
 
-o	A maximum of 255 sheets can be written to the workbook. Attempting to write more will throw a SemiFatal exception. 
+o	The constructor requires the full file path (folder + file name) where the workbook will be generated. It will throw an exception if the file extension is not XLSX.
 
-o	The constructor requires the full file path (folder + file name) where the workbook will be generated. It will throw an exception if the file extension is not XLSX. 
+o	One cannot overwrite to previously written-to row with another call to the listed write operations, due to the nature of the underlying XML. Doing so will throw an exception, to prevent workbook corruption.
 
-o	One cannot overwrite to previously written-to row with another call to the listed write operations, due to the nature of the underlying XML. Doing so will throw an exception, to prevent workbook corruption. 
+o	Sheet names must be unique in Excel workbooks. Trying to add a sheet with a name that has already been added will throw a NonFatal exception.
 
-o	Sheet names must be unique in Excel workbooks. Trying to add a sheet with a name that has already been added will throw a NonFatal exception. 
-
-o	If an Excel workbook with the same name + path exists at the path provided at the constructor, an exception will be thrown to prevent unintentional overwrites, since it would be overwritten otherwise. 
+o	If an Excel workbook with the same name exists at the path provided at the constructor, an exception will be thrown to prevent unintentional overwrites, since it would be entirely overwritten otherwise.
 
 o	It can only generate files with XLSX extension.
