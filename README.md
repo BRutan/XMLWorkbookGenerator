@@ -2,11 +2,26 @@
 
 XMLWorkbookGenerator is an intuitive wrapper for the OpenXmlWriter class defined in the OpenXML library. 
 
-OpenXmlWriter is a very fast, low overhead way of generating Excel workbooks, by writing to the underlying XML inherent to XLSX files. It unfortunately is rather complicated and mysterious to work with, given the lack of documentation. Hence the necessity for this class.
+OpenXmlWriter is a very fast, low overhead way of generating Excel workbooks, by writing to the underlying XML inherent to XLSX files. 
 
-XMLWorkbookGenerator can generate a 150 MB workbook filled with simple strings in one minute and thirty seconds, using at most 75MB of RAM. This is astronomically faster than VBA, and would cause an out-of-memory issue if attempted with the default C# Excel interop library. 
+OpenXmlWriter unfortunately is rather complicated and mysterious to work with, given its lack of documentation. If one does not perform steps in the correct order, the entire workbook may become corrupted. This object .
 
-XMLWorkbookGenerator is derived from FileType base class that implements useful functionality for files. It can only generate files with XLSX extension. Operations must be done in a particular order for the workbook to be generated correctly. One must first use the AddSheet(sheetName) method to set the ActiveSheet. All write operations will then be performed on this active sheet, and then locked in by calling the FinishSheet() method. After FinishSheet() has been called, one cannot write to a previously generated sheet. After writing all data to all intended sheets, one then must call the GenerateFile() method to finish writing to the file. Performing these steps out of order will throw a derived NonFatal or SemiFatal exception.    
+XMLWorkbookGenerator can generate a 150 MB workbook filled with simple strings in one minute and thirty seconds, using at most 75MB of RAM, all else equal. 
+
+This is astronomically faster than VBA, and would cause an out-of-memory issue if attempted with the default C# Excel interop library. 
+
+XMLWorkbookGenerator is derived from FileType base class that implements useful functionality for files. It can only generate files with XLSX extension. 
+
+Operations must be done in a particular order for the workbook to be generated correctly. The steps are:
+
+1. AddSheet(sheetName) method to set the ActiveSheet. 
+2. WriteRow(), WriteColumn() or WriteAllData() to performing all write operations on this active sheet.
+3. FinishSheet() method to lock in all write operations to the worksheet.  
+(Optional) Repeat steps 1-3 if necessary. 
+
+# Important Notes:
+
+After FinishSheet() has been called, one cannot write to a previously generated sheet. After writing all data to all intended sheets, one then must call the GenerateFile() method to finish writing to the file. Performing these steps out of order will throw a derived NonFatal or SemiFatal exception.    
 
 Write operations to sheets are performed with (using zero-based indices): 
 
