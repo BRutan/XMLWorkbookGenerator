@@ -1,4 +1,6 @@
+###########################################
 # XMLWorkbookGenerator
+###########################################
 
 XMLWorkbookGenerator is an intuitive wrapper for the OpenXmlWriter class defined in the OpenXML library. 
 
@@ -37,7 +39,7 @@ o	WriteAllData(data, row#, col#): write all string data contained in 2 dimension
 
 o	After FinishSheet() has been called, one cannot write to a previously generated sheet. After writing all data to all intended sheets, one then must call the GenerateFile() method to finish writing to the file. Performing these steps out of order will throw a derived NonFatal or SemiFatal exception.     
 
-o	Write operations check if provided row and column are out of bounds, and will throw a nonfatal exception if either are. The maximum (row, column) is (1048576, 16384) for XLSX workbooks. 
+o	Write operations check if provided row and column are out of bounds, and will throw a nonfatal exception if either are. The maximum (row, column) is (1048576, 16384) for XLSX workbooks.	
 
 o	A maximum of 255 sheets can be written to the workbook. Attempting to write more will throw a SemiFatal exception. 
 
