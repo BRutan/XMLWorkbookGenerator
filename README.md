@@ -38,7 +38,7 @@ o	WriteAllData(data, row#, col#): write all string data contained in 2 dimension
 
 # Important Notes:
 
-o	After FinishSheet() has been called, one cannot write to a previously generated sheet. 
+o	After FinishSheet() has been called, one cannot write to the previously generated ActiveSheet. 
 
 o	Write operations check if provided row and column are out of bounds, and will throw a NonFatal exception if either are. The maximum (row, column) is (1048576, 16384) for XLSX workbooks.
 
