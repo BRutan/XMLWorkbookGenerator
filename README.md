@@ -4,24 +4,26 @@ XMLWorkbookGenerator is an intuitive wrapper for the OpenXmlWriter class defined
 
 OpenXmlWriter is a very fast, low overhead way of generating Excel workbooks, by writing to the underlying XML inherent to XLSX files. 
 
-OpenXmlWriter unfortunately is rather complicated and mysterious to work with, given its lack of documentation. If one does not perform steps in the correct order, the entire workbook may become corrupted. This object .
+OpenXmlWriter unfortunately is rather complicated and mysterious to work with, given its lack of documentation. If one does not perform steps in a somewhat mysteriously correct order, the entire workbook may become corrupted. 
 
 XMLWorkbookGenerator can generate a 150 MB workbook filled with simple strings in one minute and thirty seconds, using at most 75MB of RAM, all else equal. 
 
 This is astronomically faster than VBA, and would cause an out-of-memory issue if attempted with the default C# Excel interop library. 
 
-XMLWorkbookGenerator is derived from FileType base class that implements useful functionality for files. It can only generate files with XLSX extension. 
+XMLWorkbookGenerator is derived from FileType base class that implements useful functionality for files. That class is included in this repository. 
+
+The relevant unit test for this class is “WorkbookGeneratorTest.cs” in CSharpObjectLibrary.
+
+# Order of Operations:
 
 Operations must be done in a particular order for the workbook to be generated correctly. The steps are:
 
 1. AddSheet(sheetName) method to set the ActiveSheet. 
 2. WriteRow(), WriteColumn() or WriteAllData() to performing all write operations on this active sheet.
 3. FinishSheet() method to lock in all write operations to the worksheet.  
-(Optional) Repeat steps 1-3 if necessary. 
+(Optional) Repeat steps 1-3 if necessary.
 
-# Important Notes:
-
-After FinishSheet() has been called, one cannot write to a previously generated sheet. After writing all data to all intended sheets, one then must call the GenerateFile() method to finish writing to the file. Performing these steps out of order will throw a derived NonFatal or SemiFatal exception.    
+# Write Operations:
 
 Write operations to sheets are performed with (using zero-based indices): 
 
@@ -29,9 +31,11 @@ o	WriteRow(data, row#, col#): write string data to active sheet starting at init
 
 o	WriteColumn(data, row#, col#): write string data to active sheet starting at initial address, in row-by-row fashion. 
 
-o	WriteAllData(data, row#, col#): write all string data contained in 2 dimensional data structure to active sheet starting at initial address. 
+o	WriteAllData(data, row#, col#): write all string data contained in 2 dimensional data structure to active sheet starting at initial address.
 
-# Important notes: 
+# Important Notes:
+
+o	After FinishSheet() has been called, one cannot write to a previously generated sheet. After writing all data to all intended sheets, one then must call the GenerateFile() method to finish writing to the file. Performing these steps out of order will throw a derived NonFatal or SemiFatal exception.     
 
 o	Write operations check if provided row and column are out of bounds, and will throw a nonfatal exception if either are. The maximum (row, column) is (1048576, 16384) for XLSX workbooks. 
 
@@ -43,4 +47,6 @@ o	One cannot overwrite to previously written-to row with another call to the lis
 
 o	Sheet names must be unique in Excel workbooks. Trying to add a sheet with a name that has already been added will throw an exception. 
 
-o	If an Excel workbook with the same name + path exists at the path provided at the constructor, an exception will be thrown to prevent unintentional overwrites, since it would be overwritten otherwise. The relevant unit test for this class is “WorkbookGeneratorTest.cs” in CSharpObjectLibrary.
+o	If an Excel workbook with the same name + path exists at the path provided at the constructor, an exception will be thrown to prevent unintentional overwrites, since it would be overwritten otherwise. 
+
+o	It can only generate files with XLSX extension.
