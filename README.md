@@ -1,6 +1,4 @@
-###########################################
 # XMLWorkbookGenerator
-###########################################
 
 XMLWorkbookGenerator is an intuitive wrapper for the OpenXmlWriter class defined in the OpenXML library. 
 
